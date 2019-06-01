@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mission to Mars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+  <link href="{{ url_for('static',filename='images/favicon.png') }}" rel="icon" sizes="32x32" type="image/png">
+
+<body>
+  <div class="container-fluid">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data!</a></p>
+    </div>
+  </div>
+  {% if mars %}
+  <div id="content" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <section>
+          <h3>Latest Mars News</h3>
+          <h4>{{ mars.news_title }}</h4>
+          <h4>{{ mars.news_p }}</h4>
+        </section>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8">
+        <h3>Featured Mars Image</h3>
+        <img src="{{ mars.featured_image_url }}" alt="Featured Mars Image" class="float-center img-comp">
+      </div>
+      <div class="col-lg-4">
+        <div class="panel panel-info">
+          <div class="panel-heading"><strong>Current Weather on Mars</strong></div>
+          <div class="panel-body">
+            <h5>{{ mars.mars_weather }}</h5>
+          </div>
+        </div>
+        <div class="panel panel-info">
+          <div class="panel-heading"><strong>Mars Facts</strong></div>
+          <div class="panel-body">
+            {{ mars.facts|safe }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row panel-left">
+      <div class="col-md-12">
+        <section>
+          <section id="figure">
+            <h3 id="bio-name">Mars Hemispheres</h3>
+            <hr>
+          </section>
+        </section>
+        {% for hemisphere in mars.hemisphere | batch(2, '&nbsp;') %}
+        <div class="row">
+          {% for item in hemisphere %}
+          <div class="col-md-6 col-centered imgshadow">
+            <h4>{{item.title}}</h4>
+            <a href="{{item.img_url}}" target="_blank"><img src="{{item.img_url}}" class="float-center img-comp"
+                alt="{{item.title}}"></a>
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</body>
+
+</html>
